@@ -1,3 +1,8 @@
 package com.travel.point.domain
 
-data class User(val id: String)
+import javax.persistence.Embeddable
+
+@Embeddable
+class User {
+    var id: String? = null
+}
