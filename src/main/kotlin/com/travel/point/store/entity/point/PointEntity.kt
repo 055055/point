@@ -17,7 +17,15 @@ class PointEntity(user: User)
     var user: User = user
     var point: Int = 0
 
-    fun addPoint(point: Int) {
-        this.point += point
+    fun addPoint(score: Int) {
+        this.point += score
+    }
+
+    fun subtractPoint(score: Int) {
+        if (this.point > score) {
+            this.point - score
+        } else {
+            this.point = (score - this.point)
+        }
     }
 }

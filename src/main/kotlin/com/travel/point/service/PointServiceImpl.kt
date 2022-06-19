@@ -3,7 +3,7 @@ package com.travel.point.service
 import com.travel.point.domain.Point
 import com.travel.point.service.param.PointChannelDto
 import com.travel.point.store.PointStore
-import com.travel.point.type.ActionType
+import com.travel.point.type.ReviewActionType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,9 +15,9 @@ class PointServiceImpl(
     @Transactional
     override fun calculatePoint(request: PointChannelDto) {
         when (request.review.actionType) {
-            ActionType.ADD -> add(request)
-            ActionType.MOD -> modify(request)
-            ActionType.DELETE -> delete(request)
+            ReviewActionType.ADD -> add(request)
+            ReviewActionType.MOD -> modify(request)
+            ReviewActionType.DELETE -> delete(request)
             else -> getAllByUser(request)
         }
     }
@@ -25,16 +25,18 @@ class PointServiceImpl(
     private fun add(request: PointChannelDto) {
         val review = request.review
         val bonusPoint = pointStore.getBonusPoint(review)
-        Point(review.user, bonusPoint.addScore(review.calculateScore()))
-        pointStore.addPoint(Point(review.user, review.calculateScore()), review)
+        pointStore.addPoint(Point(review.user, bonusPoint.addScore(review.calculateScore())), review)
     }
 
     private fun modify(request: PointChannelDto) {
-        TODO("Not yet implemented")
+
+
     }
 
     private fun delete(request: PointChannelDto) {
-        TODO("Not yet implemented")
+        val review = request.review
+        val point = pointStore.deletePointReview(review)
+        pointStore.subtractPoint(point,review)
     }
 
     private fun getAllByUser(request: PointChannelDto) {

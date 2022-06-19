@@ -5,7 +5,7 @@ import com.travel.point.domain.Place
 import com.travel.point.domain.Review
 import com.travel.point.domain.User
 import com.travel.point.service.param.PointChannelDto
-import com.travel.point.type.ActionType
+import com.travel.point.type.ReviewActionType
 
 class PointDto {
     data class Request(
@@ -25,7 +25,7 @@ class PointDto {
                     user = User(userId),
                     place = Place(placeId),
                     photo = Photo(attachedPhotoIds ?: emptyList()),
-                    actionType = ActionType.valueOf(action)
+                    actionType = ReviewActionType.valueOf(action)
                 )
             )
     }
