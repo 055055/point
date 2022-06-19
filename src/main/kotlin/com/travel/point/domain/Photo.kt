@@ -1,3 +1,3 @@
 package com.travel.point.domain
 
-data class Photo(val ids: ArrayList<String>)
+data class Photo(val ids: List<String>)
