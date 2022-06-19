@@ -8,7 +8,7 @@ import com.travel.point.service.param.PointChannelDto
 import com.travel.point.type.ActionType
 
 class PointDto {
-    data class request(
+    data class Request(
         val type: String,
         val action: String,
         val reviewId: String,
@@ -24,13 +24,13 @@ class PointDto {
                     content = content,
                     user = User(userId),
                     place = Place(placeId),
-                    photo = Photo(attachedPhotoIds?: emptyList()),
+                    photo = Photo(attachedPhotoIds ?: emptyList()),
                     actionType = ActionType.valueOf(action)
                 )
             )
     }
 
-    data class response(
+    data class Response(
         val userId: String,
         val point: Long,
     )

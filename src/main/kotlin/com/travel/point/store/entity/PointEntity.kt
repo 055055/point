@@ -1,18 +1,21 @@
 package com.travel.point.store.entity
 
 import com.travel.point.domain.User
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
-class PointEntity {
+@Table(name = "point")
+class PointEntity(user: User) {
     @Id
-    @GeneratedValue
-    var id: Long? = null
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var seq: Long? = null
 
     @Embedded
-    var user: User? = null
-    var point: Long = 0L
+    @Column(name = "userId")
+    var user: User = user
+    var point: Int = 0
+
+    fun addPoint(point: Int) {
+        this.point += point
+    }
 }

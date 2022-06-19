@@ -1,20 +1,25 @@
 package com.travel.point.store.entity
 
 import com.travel.point.domain.User
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import com.travel.point.type.ActionType
+import javax.persistence.*
 
 @Entity
-class PointHistoryEntity {
+@Table(name = "point_history")
+class PointHistoryEntity(pointEntity: PointEntity, actionType: ActionType, point: Int) {
     @Id
     @GeneratedValue
-    var id: Long? = null
+    var seq: Long? = null
+
+    @ManyToOne(cascade = [CascadeType.ALL])
+    var pointEntity: PointEntity = pointEntity
 
     @Embedded
-    var user: User? = null
-    var point: Long = 0L
-    var action: String? = null
-    var totalPoint: Long = 0L
+    @Column(name = "userId")
+    var user: User = pointEntity.user
+
+    @Enumerated(EnumType.STRING)
+    var action: ActionType = actionType
+    var point: Int = point
+    var totalPoint: Int = pointEntity.point
 }

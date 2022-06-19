@@ -11,7 +11,7 @@ class PointController(
 ) {
 
     @PostMapping
-    fun calculatePoint(request: PointDto.request) {
+    fun calculatePoint(@RequestBody request: PointDto.Request) {
         pointService.calculatePoint(request.convertToChannelDto())
     }
 

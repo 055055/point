@@ -10,4 +10,10 @@ data class Review(
     val photo: Photo,
     val actionType: ActionType,
 ) {
+    fun calculateScore(): Int {
+        var score = 0
+        if (content.length > 1) score++
+        if (photo.ids.size > 1) score++
+        return score
+    }
 }

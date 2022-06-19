@@ -1,5 +1,7 @@
 package com.travel.point.service
 
+import com.travel.point.domain.Point
+import com.travel.point.domain.Review
 import com.travel.point.service.param.PointChannelDto
 import com.travel.point.store.PointStore
 import com.travel.point.type.ActionType
@@ -19,6 +21,7 @@ class PointServiceImpl(
     }
 
     private fun add(request: PointChannelDto) {
+        pointStore.addPoint(Point(request.review))
 
     }
 
