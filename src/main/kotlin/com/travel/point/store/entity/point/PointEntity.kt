@@ -1,11 +1,13 @@
-package com.travel.point.store.entity
+package com.travel.point.store.entity.point
 
 import com.travel.point.domain.User
+import com.travel.point.store.entity.BaseEntity
 import javax.persistence.*
 
 @Entity
 @Table(name = "point")
-class PointEntity(user: User) {
+class PointEntity(user: User)
+    : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var seq: Long? = null

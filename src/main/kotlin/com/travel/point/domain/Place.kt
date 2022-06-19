@@ -1,4 +1,6 @@
 package com.travel.point.domain
 
-data class Place(val id: String)
+import javax.persistence.Embeddable
 
+@Embeddable
+data class Place(var id: String)
