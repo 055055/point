@@ -8,7 +8,7 @@ import com.travel.point.type.PointActionType
 import javax.persistence.*
 
 @Entity
-@Table(name = "point_history")
+@Table(name = "POINT_HISTORY")
 class PointHistoryEntity(pointEntity: PointEntity, pointReviewEntity: PointReviewEntity,
                          pointActionType: PointActionType, point: Int, comment: String)
     : BaseEntity() {

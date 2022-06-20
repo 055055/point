@@ -6,7 +6,7 @@ import com.travel.point.type.ReviewActionType
 import javax.persistence.*
 
 @Entity
-@Table(name = "point_review")
+@Table(name = "POINT_REVIEW")
 class PointReviewEntity(review: Review)
     : BaseEntity() {
     @Id

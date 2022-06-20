@@ -5,7 +5,7 @@ import com.travel.point.store.entity.BaseEntity
 import javax.persistence.*
 
 @Entity
-@Table(name = "point")
+@Table(name = "POINT")
 class PointEntity(user: User)
     : BaseEntity() {
     @Id

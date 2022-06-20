@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    container_name: mysql-travel
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=travel_point
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_HOST=%
+      - TZ=Asia/Seoul
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - /Users/Shared/data/mysql-test:/var/lib/mysql
