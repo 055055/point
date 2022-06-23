@@ -22,10 +22,6 @@ class PointEntity(user: User)
     }
 
     fun subtractPoint(score: Int) {
-        if (this.point > score) {
-            this.point - score
-        } else {
-            this.point = (score - this.point)
-        }
+        this.point -= score
     }
 }

@@ -18,25 +18,24 @@ class PointServiceImpl(
             ReviewActionType.ADD -> add(request)
             ReviewActionType.MOD -> modify(request)
             ReviewActionType.DELETE -> delete(request)
-            else -> getAllByUser(request)
         }
     }
 
     private fun add(request: PointChannelDto) {
         val review = request.review
-        val bonusPoint = pointStore.getBonusPoint(review)
-        pointStore.addPoint(Point(review.user, bonusPoint.addScore(review.calculateScore())), review)
+        pointStore.addPoint(Point(review.user, review.calculateScore()), review)
     }
 
     private fun modify(request: PointChannelDto) {
-
+        val review = request.review
+        pointStore.modifyPoint(Point(review.user, review.calculateScore()), review)
 
     }
 
     private fun delete(request: PointChannelDto) {
         val review = request.review
-        val point = pointStore.deletePointReview(review)
-        pointStore.subtractPoint(point,review)
+        val point = Point(review.user, review.calculateScore())
+         pointStore.deletePoint(point, review)
     }
 
     private fun getAllByUser(request: PointChannelDto) {

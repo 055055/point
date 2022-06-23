@@ -20,4 +20,12 @@ class PointReviewEntity(review: Review)
 
     @Enumerated(EnumType.STRING)
     var actionType: ReviewActionType = review.actionType
+
+    fun updatePointReview(review: Review) {
+        this.content = review.content
+        this.userId = review.user.id
+        this.placeId = review.place.id
+        this.photo = review.photo.ids
+        this.actionType = review.actionType
+    }
 }

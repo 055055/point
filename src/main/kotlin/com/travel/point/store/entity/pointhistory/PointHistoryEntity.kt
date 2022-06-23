@@ -5,12 +5,13 @@ import com.travel.point.store.entity.BaseEntity
 import com.travel.point.store.entity.point.PointEntity
 import com.travel.point.store.entity.pointreview.PointReviewEntity
 import com.travel.point.type.PointActionType
+import com.travel.point.type.PointType
 import javax.persistence.*
 
 @Entity
 @Table(name = "POINT_HISTORY")
 class PointHistoryEntity(pointEntity: PointEntity, pointReviewEntity: PointReviewEntity,
-                         pointActionType: PointActionType, point: Int, comment: String)
+                         pointType: PointType, point: Int, comment: String)
     : BaseEntity() {
     @Id
     @GeneratedValue
@@ -28,7 +29,7 @@ class PointHistoryEntity(pointEntity: PointEntity, pointReviewEntity: PointRevie
     var user: User = pointEntity.user
 
     @Enumerated(EnumType.STRING)
-    var pointActionType: PointActionType = pointActionType
+    var pointType: PointType = pointType
     var point: Int = point
     var totalPoint: Int = pointEntity.point
 
