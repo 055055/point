@@ -22,6 +22,16 @@ group = "com.travel"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
+
+object Version{
+    object Test{
+        const val KOTEST = "5.3.1"
+        const val MOCKK = "1.12.4"
+        const val NINJA_SQUAD = "3.1.1"
+        const val TESTCONTAINERS = "1.17.2"
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -38,15 +48,19 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("mysql:mysql-connector-java")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation ("io.kotest:kotest-assertions-core:${Version.Test.KOTEST}")
+    testImplementation ("io.kotest:kotest-runner-junit5:${Version.Test.KOTEST}")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.0")
+    testImplementation ("io.mockk:mockk:${Version.Test.MOCKK}")
+    testImplementation ("com.ninja-squad:springmockk:${Version.Test.NINJA_SQUAD}")
+    testImplementation ("org.testcontainers:testcontainers:${Version.Test.TESTCONTAINERS}")
+    testImplementation("org.testcontainers:mysql:${Version.Test.TESTCONTAINERS}")
+
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("org.testcontainers:testcontainers-bom:${property("testcontainersVersion")}")
-    }
-}
+
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
