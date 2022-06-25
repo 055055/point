@@ -18,7 +18,7 @@ class PointReviewEntity(review: Review)
     var userId: String = review.user.id
     var placeId: String = review.place.id
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     var photo: List<String> = review.photo.ids
 
     @Enumerated(EnumType.STRING)
