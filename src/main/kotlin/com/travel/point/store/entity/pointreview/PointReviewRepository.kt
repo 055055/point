@@ -13,9 +13,14 @@ interface PointReviewRepository : JpaRepository<PointReviewEntity, String> {
          SELECT count(pr) FROM PointReviewEntity pr 
             WHERE pr.actionType <> :actionType
             AND pr.placeId = :placeId
+            AND pr.userId <> :userId
         """
     )
-    fun countNotDeletedPlaceId(@Param("placeId") placeId: String, @Param("actionType") reviewActionType: ReviewActionType = ReviewActionType.DELETE): Int
+    fun countNotDeletedPlaceId(
+        @Param("placeId") placeId: String,
+        @Param("userId") userId: String,
+        @Param("actionType") reviewActionType: ReviewActionType = ReviewActionType.DELETE
+    ): Int
 
     @Query(
         """

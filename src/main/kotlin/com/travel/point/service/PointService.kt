@@ -3,5 +3,9 @@ package com.travel.point.service
 import com.travel.point.service.param.PointChannelDto
 
 interface PointService {
-    fun calculatePoint(request: PointChannelDto)
+    fun add(request: PointChannelDto)
+    fun modify(request: PointChannelDto)
+    fun delete(request: PointChannelDto)
 }
+
+

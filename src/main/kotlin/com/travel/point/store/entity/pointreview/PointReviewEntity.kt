@@ -1,6 +1,9 @@
 package com.travel.point.store.entity.pointreview
 
+import com.travel.point.domain.Photo
+import com.travel.point.domain.Place
 import com.travel.point.domain.Review
+import com.travel.point.domain.User
 import com.travel.point.store.entity.BaseEntity
 import com.travel.point.type.ReviewActionType
 import javax.persistence.*
@@ -28,4 +31,14 @@ class PointReviewEntity(review: Review)
         this.photo = review.photo.ids
         this.actionType = review.actionType
     }
+
+    fun convertToReview() =
+        Review(
+            id = this.id,
+            content = this.content,
+            user = User(this.userId),
+            place = Place(this.placeId),
+            photo = Photo(this.photo),
+            actionType = this.actionType
+        )
 }

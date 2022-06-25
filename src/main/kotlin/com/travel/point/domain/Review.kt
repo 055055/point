@@ -1,5 +1,6 @@
 package com.travel.point.domain
 
+import com.travel.point.type.PointType
 import com.travel.point.type.ReviewActionType
 
 data class Review(
@@ -10,7 +11,15 @@ data class Review(
     val photo: Photo,
     val actionType: ReviewActionType,
 ) {
-    fun calculateScore(): Int {
+
+    fun convertToPoint() =
+        Point(
+            user = this.user,
+            score = this.calculatePointScore(),
+            type = PointType.REVIEW
+        )
+
+    private fun calculatePointScore(): Int {
         var score = 0
         if (content.isNotBlank()) score++
         if (photo.ids.isNotEmpty()) score++

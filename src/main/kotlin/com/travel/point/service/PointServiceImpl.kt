@@ -1,9 +1,7 @@
 package com.travel.point.service
 
-import com.travel.point.domain.Point
 import com.travel.point.service.param.PointChannelDto
 import com.travel.point.store.PointStore
-import com.travel.point.type.ReviewActionType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -11,31 +9,58 @@ import org.springframework.transaction.annotation.Transactional
 class PointServiceImpl(
     private val pointStore: PointStore
 ) : PointService {
-
     @Transactional
-    override fun calculatePoint(request: PointChannelDto) {
-        when (request.review.actionType) {
-            ReviewActionType.ADD -> add(request)
-            ReviewActionType.MOD -> modify(request)
-            ReviewActionType.DELETE -> delete(request)
+    override fun add(request: PointChannelDto) {
+        val review = pointStore.saveReview(request.review)
+        pointStore.addPoint(
+            point = review.convertToPoint(),
+            review = review,
+            comment = "리뷰 이벤트 포인트 추가"
+        )
+        val bonusPoint = pointStore.getReviewBonusPoint(review)
+        if (bonusPoint.isGreatherThanZero()) {
+            pointStore.addPoint(
+                point = bonusPoint,
+                review = review,
+                comment = "여행지 첫 방문 보너스 포인트 추가"
+            )
         }
     }
 
-    private fun add(request: PointChannelDto) {
-        val review = request.review
-        pointStore.addPoint(Point(review.user, review.calculateScore()), review)
+    @Transactional
+    override fun delete(request: PointChannelDto) {
+        val review = pointStore.deleteReview(request.review)
+        pointStore.deletePoint(
+            point = review.convertToPoint(),
+            review = review,
+            comment = "리뷰 이벤트 포인트 삭제"
+        )
+        val bonusPoint = pointStore.getRollbackReviewBonusPoint(review)
+        if (bonusPoint.isGreatherThanZero()) {
+            pointStore.deletePoint(
+                point = bonusPoint,
+                review = review,
+                comment = "여행지 첫 방문 보너스 포인트 삭제"
+            )
+        }
     }
 
-    private fun modify(request: PointChannelDto) {
+    @Transactional
+    override fun modify(request: PointChannelDto) {
         val review = request.review
-        pointStore.modifyPoint(Point(review.user, review.calculateScore()), review)
+        val point = pointStore.getLastReviewPointHistory(review)
+        pointStore.deletePoint(
+            point = point,
+            review = review,
+            comment = "리뷰 변경으로 인한 직전 포인트 삭제"
+        )
 
-    }
-
-    private fun delete(request: PointChannelDto) {
-        val review = request.review
-        val point = Point(review.user, review.calculateScore())
-         pointStore.deletePoint(point, review)
+        pointStore.modifyReview(review)
+        pointStore.addPoint(
+            point = review.convertToPoint(),
+            review = review,
+            comment = "리뷰 이벤트 포인트 추가"
+        )
     }
 
     private fun getAllByUser(request: PointChannelDto) {

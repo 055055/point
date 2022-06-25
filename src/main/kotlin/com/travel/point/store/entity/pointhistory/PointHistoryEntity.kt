@@ -20,9 +20,10 @@ class PointHistoryEntity(pointEntity: PointEntity, pointReviewEntity: PointRevie
     @ManyToOne(cascade = [CascadeType.ALL])
     var pointEntity: PointEntity = pointEntity
 
-    @JoinColumn(name = "point_review_id")
+    @JoinColumn(name = "review_id")
     @ManyToOne(cascade = [CascadeType.ALL])
-    var pointReviewEntity: PointReviewEntity = pointReviewEntity
+    var pointReviewEntity: PointReviewEntity? = pointReviewEntity
+//    var reviewId: String? = reviewId
 
     @Embedded
     @Column(name = "userId")

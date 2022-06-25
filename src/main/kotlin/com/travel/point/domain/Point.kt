@@ -1,7 +1,13 @@
 package com.travel.point.domain
 
-class Point(user: User, point: Int) {
-    val user: User = user
-    val score: Int = point
-    var totalScore: Int = 0
+import com.travel.point.type.PointType
+
+class Point(user:User, score: Int, type: PointType) {
+    var user: User = user
+    val score: Int = score
+    val type: PointType = type
+
+    fun  isGreatherThanZero(): Boolean {
+        return score > 0
+    }
 }

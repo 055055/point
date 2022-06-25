@@ -4,8 +4,12 @@ import com.travel.point.domain.Point
 import com.travel.point.domain.Review
 
 interface PointStore {
-    fun addPoint(point: Point, review: Review)
-    fun deletePoint(point: Point, review: Review)
-    fun modifyPoint(point: Point, review: Review)
+    fun addPoint(point: Point, review: Review, comment: String)
+    fun deletePoint(point: Point, review: Review, comment: String)
+    fun modifyReview(review: Review)
+    fun saveReview(review: Review): Review
+    fun getReviewBonusPoint(review:Review):Point
+    fun getRollbackReviewBonusPoint(review:Review):Point
+    fun deleteReview(review: Review): Review
+    fun getLastReviewPointHistory(review:Review):Point
 }
-
