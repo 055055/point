@@ -1,7 +1,7 @@
 package com.travel.point.domain
 
-import com.travel.point.type.PointType
 import com.travel.point.type.EventActionType
+import com.travel.point.type.PointType
 
 data class Review(
     val id: String,
@@ -15,9 +15,10 @@ data class Review(
     fun convertToPoint() =
         Point(
             user = this.user,
-            score = this.calculatePointScore(),
-            type = PointType.REVIEW
-        )
+            score = this.calculatePointScore()
+        ).apply {
+            this.type = PointType.REVIEW
+        }
 
     private fun calculatePointScore(): Int {
         var score = 0

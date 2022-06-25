@@ -4,14 +4,15 @@ import com.travel.point.constants.ONE
 import com.travel.point.constants.ZERO
 import com.travel.point.domain.Point
 import com.travel.point.domain.Review
+import com.travel.point.domain.User
 import com.travel.point.store.entity.point.PointEntity
 import com.travel.point.store.entity.point.PointRepository
 import com.travel.point.store.entity.pointhistory.PointHistoryEntity
 import com.travel.point.store.entity.pointhistory.PointHistoryRepository
 import com.travel.point.store.entity.pointreview.PointReviewEntity
 import com.travel.point.store.entity.pointreview.PointReviewRepository
-import com.travel.point.type.PointType
 import com.travel.point.type.EventActionType
+import com.travel.point.type.PointType
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -43,7 +44,7 @@ class PointStoreImpl(
             PointHistoryEntity(
                 pointEntity = pointEntity,
                 pointReviewEntity = pointReviewRepository.findById(review.id).orElse(null),
-                pointType = point.type,
+                pointType = point.type ?: PointType.REVIEW,
                 point = point.score,
                 comment = comment
             )
@@ -57,14 +58,16 @@ class PointStoreImpl(
             Point(
                 user = review.user,
                 score = ONE,
-                type = PointType.BONUS
-            )
+            ).apply {
+                this.type = PointType.BONUS
+            }
         } else {
             Point(
                 user = review.user,
                 score = ZERO,
-                type = PointType.BONUS
-            )
+            ).apply {
+                this.type = PointType.BONUS
+            }
         }
     }
 
@@ -82,21 +85,23 @@ class PointStoreImpl(
             Point(
                 user = review.user,
                 score = ONE,
-                type = PointType.BONUS
-            )
+            ).apply {
+                this.type = PointType.BONUS
+            }
         } else {
             Point(
                 user = review.user,
                 score = ZERO,
-                type = PointType.BONUS
-            )
+            ).apply {
+                this.type = PointType.BONUS
+            }
         }
     }
 
     @Transactional
     override fun deletePoint(point: Point, review: Review, comment: String) {
 
-        val deletePoint = pointHistoryRepository.findByReviewId(review.id, point.type)
+        val deletePoint = pointHistoryRepository.findByReviewId(review.id, point.type ?: PointType.REVIEW)
             .stream().mapToInt { it.point }.sum()
         println("review = ${review.id}")
         println("deletePoint = ${deletePoint}")
@@ -115,7 +120,7 @@ class PointStoreImpl(
             PointHistoryEntity(
                 pointEntity = pointEntity,
                 pointReviewEntity = pointReviewRepository.findById(review.id).orElse(null),
-                pointType = point.type,
+                pointType = point.type ?: PointType.REVIEW,
                 point = (point.score * -1),
                 comment = comment
             )
@@ -146,8 +151,20 @@ class PointStoreImpl(
         }
         return Point(
             user = pointHistoryEntity.first().user,
-            score = pointHistoryEntity.first().point,
-            type = pointHistoryEntity.first().pointType
+            score = pointHistoryEntity.first().point
+        ).apply {
+            this.type = pointHistoryEntity.first().pointType
+        }
+    }
+
+    @Transactional(readOnly = true)
+    override fun getPoint(user: User): Point {
+        val pointEntity = pointRepository.findByUserId(user.id)
+            .orElseThrow { IllegalAccessException("회원 아이디를 확인해 주세요.") }
+
+        return Point(
+            user = pointEntity.user,
+            score = pointEntity.point
         )
     }
 

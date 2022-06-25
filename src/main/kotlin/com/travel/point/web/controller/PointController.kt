@@ -1,5 +1,6 @@
 package com.travel.point.web.controller
 
+import com.travel.point.domain.User
 import com.travel.point.service.PointAdapter
 import com.travel.point.web.param.PointDto
 import org.springframework.web.bind.annotation.*
@@ -15,8 +16,9 @@ class PointController(
         pointAdapter.calculatePoint(request.convertToChannelDto())
     }
 
-    @GetMapping("/{userId}")
-    fun getPoint(@PathVariable userId: String) {
-
-    }
+    @GetMapping("/point/{userId}")
+    fun getPoint(@PathVariable userId: String) =
+        pointAdapter.getPoint(
+            User(id = userId)
+        )?.convertToPointResponse()
 }

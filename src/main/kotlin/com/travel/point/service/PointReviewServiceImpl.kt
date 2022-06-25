@@ -1,7 +1,9 @@
 package com.travel.point.service
 
 import com.travel.point.constants.*
+import com.travel.point.domain.User
 import com.travel.point.service.param.PointChannelDto
+import com.travel.point.service.param.PointResult
 import com.travel.point.store.PointStore
 import com.travel.point.type.PointEventType
 import org.springframework.stereotype.Service
@@ -13,6 +15,11 @@ class PointReviewServiceImpl(
 ) : PointService {
     override fun eventType(): PointEventType = PointEventType.REVIEW
 
+    override fun getPoint(user: User) =
+        PointResult(
+            point = pointStore.getPoint(user)
+        )
+
     @Transactional
     override fun add(request: PointChannelDto) {
         val review = pointStore.saveReview(request.review)
@@ -22,7 +29,7 @@ class PointReviewServiceImpl(
             comment = REVIEW_POINT_ADD
         )
         val bonusPoint = pointStore.getReviewBonusPoint(review)
-        if (bonusPoint.isGreatherThanZero()) {
+        if (bonusPoint.isGreaterThanZero) {
             pointStore.addPoint(
                 point = bonusPoint,
                 review = review,
@@ -40,7 +47,7 @@ class PointReviewServiceImpl(
             comment = REVIEW_POINT_SUBTRACT
         )
         val bonusPoint = pointStore.getRollbackReviewBonusPoint(review)
-        if (bonusPoint.isGreatherThanZero()) {
+        if (bonusPoint.isGreaterThanZero) {
             pointStore.deletePoint(
                 point = bonusPoint,
                 review = review,
@@ -65,9 +72,5 @@ class PointReviewServiceImpl(
             review = review,
             comment = REVIEW_POINT_ADD
         )
-    }
-
-    private fun getAllByUser(request: PointChannelDto) {
-        TODO("Not yet implemented")
     }
 }

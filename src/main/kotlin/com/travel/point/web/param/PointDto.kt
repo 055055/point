@@ -1,9 +1,6 @@
 package com.travel.point.web.param
 
-import com.travel.point.domain.Photo
-import com.travel.point.domain.Place
-import com.travel.point.domain.Review
-import com.travel.point.domain.User
+import com.travel.point.domain.*
 import com.travel.point.service.param.PointChannelDto
 import com.travel.point.type.EventActionType
 import com.travel.point.type.PointEventType
@@ -33,7 +30,6 @@ class PointDto {
     }
 
     data class Response(
-        val userId: String,
-        val point: Long,
+        val point: Point,
     )
 }
