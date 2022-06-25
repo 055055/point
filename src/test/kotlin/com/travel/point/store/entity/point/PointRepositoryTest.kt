@@ -15,6 +15,10 @@ class PointRepositoryTest(
     private val pointRepository: PointRepository
 ) : FunSpec({
 
+    beforeEach {
+        pointRepository.deleteAll()
+    }
+
     test("userId를 조회할 수 있다.") {
         //given
         val userId = "test1"
