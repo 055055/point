@@ -5,7 +5,8 @@ import com.travel.point.domain.Place
 import com.travel.point.domain.Review
 import com.travel.point.domain.User
 import com.travel.point.service.param.PointChannelDto
-import com.travel.point.type.ReviewActionType
+import com.travel.point.type.EventActionType
+import com.travel.point.type.PointEventType
 
 class PointDto {
     data class Request(
@@ -19,13 +20,14 @@ class PointDto {
     ) {
         fun convertToChannelDto() =
             PointChannelDto(
+                pointEventType = PointEventType.valueOf(type),
                 review = Review(
                     id = reviewId,
                     content = content,
                     user = User(userId),
                     place = Place(placeId),
                     photo = Photo(attachedPhotoIds ?: emptyList()),
-                    actionType = ReviewActionType.valueOf(action)
+                    actionType = EventActionType.valueOf(action)
                 )
             )
     }

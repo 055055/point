@@ -1,7 +1,7 @@
 package com.travel.point.domain
 
 import com.travel.point.type.PointType
-import com.travel.point.type.ReviewActionType
+import com.travel.point.type.EventActionType
 
 data class Review(
     val id: String,
@@ -9,7 +9,7 @@ data class Review(
     val user: User,
     val place: Place,
     val photo: Photo,
-    val actionType: ReviewActionType,
+    val actionType: EventActionType,
 ) {
 
     fun convertToPoint() =

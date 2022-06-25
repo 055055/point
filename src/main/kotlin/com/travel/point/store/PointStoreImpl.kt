@@ -11,7 +11,7 @@ import com.travel.point.store.entity.pointhistory.PointHistoryRepository
 import com.travel.point.store.entity.pointreview.PointReviewEntity
 import com.travel.point.store.entity.pointreview.PointReviewRepository
 import com.travel.point.type.PointType
-import com.travel.point.type.ReviewActionType
+import com.travel.point.type.EventActionType
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -127,7 +127,7 @@ class PointStoreImpl(
         val pointReview = pointReviewRepository.findById(review.id)
             .orElseThrow { IllegalAccessException("리뷰 아이디를 다시 확인해주세요.") }
 
-        if (pointReview.actionType == ReviewActionType.DELETE) {
+        if (pointReview.actionType == EventActionType.DELETE) {
             throw IllegalStateException("이미 삭제된 리뷰 입니다. ")
         }
         pointReview.updatePointReview(review)
@@ -156,7 +156,7 @@ class PointStoreImpl(
         val pointReview = pointReviewRepository.findById(review.id)
             .orElseThrow { IllegalAccessException("리뷰 아이디를 다시 확인해주세요.") }
 
-        if (pointReview.actionType == ReviewActionType.DELETE) {
+        if (pointReview.actionType == EventActionType.DELETE) {
             throw IllegalStateException("이미 삭제된 리뷰 입니다. ")
         }
         pointReview.updatePointReview(review)

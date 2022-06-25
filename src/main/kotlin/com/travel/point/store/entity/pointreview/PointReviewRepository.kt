@@ -1,6 +1,6 @@
 package com.travel.point.store.entity.pointreview
 
-import com.travel.point.type.ReviewActionType
+import com.travel.point.type.EventActionType
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -19,7 +19,7 @@ interface PointReviewRepository : JpaRepository<PointReviewEntity, String> {
     fun countNotDeletedPlaceId(
         @Param("placeId") placeId: String,
         @Param("userId") userId: String,
-        @Param("actionType") reviewActionType: ReviewActionType = ReviewActionType.DELETE
+        @Param("actionType") eventActionType: EventActionType = EventActionType.DELETE
     ): Int
 
     @Query(
@@ -32,7 +32,7 @@ interface PointReviewRepository : JpaRepository<PointReviewEntity, String> {
     )
     fun findFirstReviewByPlaceId(
         @Param("placeId") placeId: String,
-        @Param("reviewActionType") reviewActionType: ReviewActionType,
+        @Param("reviewActionType") eventActionType: EventActionType,
         pageable: Pageable
     ): List<PointReviewEntity>
 }

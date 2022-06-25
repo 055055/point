@@ -4,7 +4,6 @@ import com.travel.point.domain.User
 import com.travel.point.store.entity.BaseEntity
 import com.travel.point.store.entity.point.PointEntity
 import com.travel.point.store.entity.pointreview.PointReviewEntity
-import com.travel.point.type.PointActionType
 import com.travel.point.type.PointType
 import javax.persistence.*
 

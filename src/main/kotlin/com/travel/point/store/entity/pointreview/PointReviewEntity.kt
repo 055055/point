@@ -5,7 +5,7 @@ import com.travel.point.domain.Place
 import com.travel.point.domain.Review
 import com.travel.point.domain.User
 import com.travel.point.store.entity.BaseEntity
-import com.travel.point.type.ReviewActionType
+import com.travel.point.type.EventActionType
 import javax.persistence.*
 
 @Entity
@@ -22,7 +22,7 @@ class PointReviewEntity(review: Review)
     var photo: List<String> = review.photo.ids
 
     @Enumerated(EnumType.STRING)
-    var actionType: ReviewActionType = review.actionType
+    var actionType: EventActionType = review.actionType
 
     fun updatePointReview(review: Review) {
         this.content = review.content

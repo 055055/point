@@ -1,5 +1,5 @@
 package com.travel.point.type
 
-enum class ReviewActionType {
+enum class EventActionType {
     ADD, MOD, DELETE;
 }
