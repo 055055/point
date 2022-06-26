@@ -8,29 +8,39 @@ import com.travel.point.type.PointType
 import javax.persistence.*
 
 @Entity
-@Table(name = "POINT_HISTORY")
-class PointHistoryEntity(pointEntity: PointEntity, pointReviewEntity: PointReviewEntity,
-                         pointType: PointType, point: Int, comment: String)
-    : BaseEntity() {
+@Table(
+    name = "POINT_HISTORY",
+    indexes = [
+        Index(name = "point_history_index_1", columnList = "createdDateTime")
+    ]
+)
+class PointHistoryEntity(
+    pointEntity: PointEntity,
+    pointReviewEntity: PointReviewEntity,
+    pointType: PointType,
+    point: Int,
+    comment: String
+) : BaseEntity() {
     @Id
     @GeneratedValue
     var seq: Long? = null
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "point_id")
+    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var pointEntity: PointEntity = pointEntity
 
     @JoinColumn(name = "review_id")
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var pointReviewEntity: PointReviewEntity? = pointReviewEntity
-//    var reviewId: String? = reviewId
 
     @Embedded
-    @Column(name = "userId")
     var user: User = pointEntity.user
 
     @Enumerated(EnumType.STRING)
     var pointType: PointType = pointType
+
     var point: Int = point
+
     var totalPoint: Int = pointEntity.point
 
     var comment: String = comment

@@ -5,7 +5,13 @@ import com.travel.point.store.entity.BaseEntity
 import javax.persistence.*
 
 @Entity
-@Table(name = "POINT")
+@Table(
+    name = "POINT",
+    indexes = [
+        Index(name = "point_index_1", columnList = "userId" , unique = true),
+        Index(name = "point_index_2", columnList = "createdDateTime")
+    ]
+)
 class PointEntity(user: User)
     : BaseEntity() {
     @Id
@@ -13,8 +19,8 @@ class PointEntity(user: User)
     var seq: Long? = null
 
     @Embedded
-    @Column(name = "userId")
     var user: User = user
+
     var point: Int = 0
 
     fun addPoint(score: Int) {

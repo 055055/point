@@ -1,7 +1,4 @@
 package com.travel.point.domain
 
-import javax.persistence.ElementCollection
-import javax.persistence.Embeddable
+data class Photo(var ids: List<String>)
 
-@Embeddable
-data class Photo(@ElementCollection var ids: List<String>)

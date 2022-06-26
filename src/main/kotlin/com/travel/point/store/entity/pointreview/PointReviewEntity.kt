@@ -9,16 +9,32 @@ import com.travel.point.type.EventActionType
 import javax.persistence.*
 
 @Entity
-@Table(name = "POINT_REVIEW")
+@Table(
+    name = "POINT_REVIEW",
+    indexes = [
+        Index(name = "point_review_index_1", columnList = "placeId, userId"),
+        Index(name = "point_review_index_2", columnList = "createdDateTime")
+    ]
+)
 class PointReviewEntity(review: Review)
     : BaseEntity() {
     @Id
     var id: String = review.id
-    var content: String = review.content
-    var userId: String = review.user.id
-    var placeId: String = review.place.id
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    var content: String = review.content
+
+    @Embedded
+    var user: User = review.user
+
+    @Embedded
+    var place: Place = review.place
+
+    @CollectionTable(
+        name = "POINT_REVIEW_PHOTO",
+        joinColumns = [JoinColumn(name = "point_review_id",
+        referencedColumnName = "id")]
+    )
+    @ElementCollection(fetch = FetchType.LAZY)
     var photo: List<String> = review.photo.ids
 
     @Enumerated(EnumType.STRING)
@@ -26,8 +42,8 @@ class PointReviewEntity(review: Review)
 
     fun updatePointReview(review: Review) {
         this.content = review.content
-        this.userId = review.user.id
-        this.placeId = review.place.id
+        this.user = review.user
+        this.place = review.place
         this.photo = review.photo.ids
         this.actionType = review.actionType
     }
@@ -36,8 +52,8 @@ class PointReviewEntity(review: Review)
         Review(
             id = this.id,
             content = this.content,
-            user = User(this.userId),
-            place = Place(this.placeId),
+            user = this.user,
+            place = this.place,
             photo = Photo(this.photo),
             actionType = this.actionType
         )
