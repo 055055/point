@@ -5,6 +5,10 @@ import com.travel.point.constants.ZERO
 import com.travel.point.domain.Point
 import com.travel.point.domain.Review
 import com.travel.point.domain.User
+import com.travel.point.error.common.CommonError
+import com.travel.point.error.common.CommonException
+import com.travel.point.error.pointreview.PointReviewError
+import com.travel.point.error.pointreview.PointReviewException
 import com.travel.point.store.entity.point.PointEntity
 import com.travel.point.store.entity.point.PointRepository
 import com.travel.point.store.entity.pointhistory.PointHistoryEntity
@@ -27,7 +31,7 @@ class PointStoreImpl(
     @Transactional
     override fun saveReview(review: Review): Review {
         if (pointReviewRepository.findById(review.id).isPresent) {
-            throw IllegalAccessException("already got point")
+            throw PointReviewException(PointReviewError.ALREADY_SAVED_REVIEW)
         }
         val pointReviewEntity = pointReviewRepository.save(PointReviewEntity(review))
         return pointReviewEntity.convertToReview()
@@ -77,9 +81,6 @@ class PointStoreImpl(
             PointType.BONUS,
             Pageable.ofSize(1)
         )
-        if (bonusPointHistory.size > 1) {
-            throw IllegalArgumentException(" bonus point exception")
-        }
 
         return if (bonusPointHistory.isNotEmpty()) {
             Point(
@@ -103,16 +104,13 @@ class PointStoreImpl(
 
         val deletePoint = pointHistoryRepository.findByReviewId(review.id, point.type ?: PointType.REVIEW)
             .stream().mapToInt { it.point }.sum()
-        println("review = ${review.id}")
-        println("deletePoint = ${deletePoint}")
-        println("point = ${point.score}")
 
         if (point.score != deletePoint) {
-            throw IllegalAccessException("point sum error!")
+            throw PointReviewException(PointReviewError.MISMATCH_DELETE_POINT)
         }
 
         val pointEntity = pointRepository.findByUserId(point.user.id)
-            .orElseThrow { IllegalAccessException("유저 아이디를 다시 확인해주세요.") }
+            .orElseThrow { CommonException(CommonError.CHECK_USER_ID) }
 
         pointEntity.subtractPoint(point.score)
 
@@ -130,10 +128,10 @@ class PointStoreImpl(
     @Transactional
     override fun deleteReview(review: Review): Review {
         val pointReview = pointReviewRepository.findById(review.id)
-            .orElseThrow { IllegalAccessException("리뷰 아이디를 다시 확인해주세요.") }
+            .orElseThrow { PointReviewException(PointReviewError.CHECK_REVIEW_ID) }
 
         if (pointReview.actionType == EventActionType.DELETE) {
-            throw IllegalStateException("이미 삭제된 리뷰 입니다. ")
+            throw PointReviewException(PointReviewError.ALREADY_DELETED_REVIEW)
         }
         pointReview.updatePointReview(review)
         return pointReview.convertToReview()
@@ -147,7 +145,7 @@ class PointStoreImpl(
         )
 
         if (pointHistoryEntity.isEmpty()) {
-            throw IllegalAccessException("에러")
+            throw PointReviewException(PointReviewError.EMPTY_POINT_HISTORY)
         }
         return Point(
             user = pointHistoryEntity.first().user,
@@ -160,7 +158,7 @@ class PointStoreImpl(
     @Transactional(readOnly = true)
     override fun getPoint(user: User): Point {
         val pointEntity = pointRepository.findByUserId(user.id)
-            .orElseThrow { IllegalAccessException("회원 아이디를 확인해 주세요.") }
+            .orElseThrow { CommonException(CommonError.CHECK_USER_ID) }
 
         return Point(
             user = pointEntity.user,
@@ -171,10 +169,10 @@ class PointStoreImpl(
     @Transactional
     override fun modifyReview(review: Review) {
         val pointReview = pointReviewRepository.findById(review.id)
-            .orElseThrow { IllegalAccessException("리뷰 아이디를 다시 확인해주세요.") }
+            .orElseThrow { PointReviewException(PointReviewError.CHECK_REVIEW_ID) }
 
         if (pointReview.actionType == EventActionType.DELETE) {
-            throw IllegalStateException("이미 삭제된 리뷰 입니다. ")
+            throw PointReviewException(PointReviewError.ALREADY_DELETED_REVIEW)
         }
         pointReview.updatePointReview(review)
     }
