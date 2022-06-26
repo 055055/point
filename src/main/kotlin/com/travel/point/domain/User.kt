@@ -4,4 +4,7 @@ import javax.persistence.Column
 import javax.persistence.Embeddable
 
 @Embeddable
-data class User(@Column(name = "userId")var id: String)
+data class User(
+    @Column(name = "userId", nullable = false)
+    var id: String
+)

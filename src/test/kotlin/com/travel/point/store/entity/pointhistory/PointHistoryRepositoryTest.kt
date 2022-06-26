@@ -68,7 +68,11 @@ class PointHistoryRepositoryTest(
         //given
         val testReviewId = "testReviewId"
 
-        val mock = getMockPointHistoryEntity(reviewId = testReviewId, pointType = PointType.REVIEW)
+        val mock = getMockPointHistoryEntity(
+            userId = "userId3",
+            reviewId = testReviewId,
+            pointType = PointType.REVIEW
+        )
 
         pointHistoryRepository.save(mock)
 

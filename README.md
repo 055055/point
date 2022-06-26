@@ -47,3 +47,94 @@ POST /events
   * 글과 사진이 있는 리뷰에서 사진을 모두 삭제하면 1점 회수
 * 사용자 입장에서 본 '첫 리뷰'일 때 보너스 점수 부여
   * 어떤 장소에서 사용자 A가 리뷰를 남겼다가 삭제하고, 삭제된 이후 사용자 B가 리뷰를 남기면 사용자 B에게 보너스 점수를 부여하지 않는다.
+
+---
+##실행방법
+* sudo yum install java-11-openjdk-devel (자바 11 설치)
+* sudo /usr/sbin/alternatives --config java (자바 11 선택)
+* sudo yum install git (깃 설치)
+* curl -fsSL https://get.docker.com/ | sh (docker 설치 )
+* sudo systemctl start docker (docker 서비스 시작)
+* sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose (docker compose 설치)
+* sudo chmod +x /usr/local/bin/docker-compose (docker compose 실행 권한 부여)
+* git clone https://github.com/055055/point.git (프로젝트 클론)
+* cd point/
+* docker-compose up -d
+* ./gradlew build (프로젝트 빌드)
+* nohup java -jar ./point/build/libs/point-0.0.1-SNAPSHOT.jar 2>&1 & (프로젝트 실행)
+
+---
+## Database DDL
+```sql
+create table point
+(
+    seq                bigint auto_increment
+        primary key,
+    created_date_time  datetime     null,
+    modified_date_time datetime     null,
+    point              int          not null,
+    user_id            varchar(255) null,
+    constraint point_index_1
+        unique (user_id)
+);
+
+create index point_index_2
+    on point (created_date_time);
+```
+
+```sql
+create table point_history
+(
+    seq                bigint       not null
+        primary key,
+    created_date_time  datetime     null,
+    modified_date_time datetime     null,
+    comment            varchar(255) null,
+    point              int          not null,
+    point_type         varchar(255) null,
+    total_point        int          not null,
+    user_id            varchar(255) null,
+    point_id           bigint       null,
+    review_id          varchar(255) null,
+    constraint point_history_index_1
+        unique (user_id),
+    constraint FK70yu34b3mgx3txpiqgbm2a946
+        foreign key (review_id) references point_review (id),
+    constraint FKbcsl46fi3o1hinpj3gt575r3k
+        foreign key (point_id) references point (seq)
+);
+
+create index point_history_index_2
+    on point_history (created_date_time);
+```
+
+```sql
+create table point_review
+(
+    id                 varchar(255) not null
+        primary key,
+    created_date_time  datetime     null,
+    modified_date_time datetime     null,
+    action_type        varchar(255) null,
+    content            varchar(255) null,
+    place_id           varchar(255) null,
+    user_id            varchar(255) null
+);
+
+create index point_review_index_1
+    on point_review (place_id, user_id);
+
+create index point_review_index_2
+    on point_review (created_date_time)
+
+```
+
+```sql
+create table point_review_photo
+(
+    point_review_id varchar(255) not null,
+    photo           varchar(255) null,
+    constraint FKd7ts9290j1ofejijebsksxbxh
+        foreign key (point_review_id) references point_review (id)
+);
+```

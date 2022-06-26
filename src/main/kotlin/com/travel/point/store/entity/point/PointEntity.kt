@@ -21,6 +21,7 @@ class PointEntity(user: User)
     @Embedded
     var user: User = user
 
+    @Column(nullable = false)
     var point: Int = 0
 
     fun addPoint(score: Int) {

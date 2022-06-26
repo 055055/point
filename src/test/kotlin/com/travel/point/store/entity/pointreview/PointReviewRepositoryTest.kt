@@ -32,9 +32,9 @@ class PointReviewRepositoryTest(
         //then
         pointReviewEntity.get().id shouldBe mock.id
         pointReviewEntity.get().content shouldBe mock.content
-        pointReviewEntity.get().placeId shouldBe mock.placeId
+        pointReviewEntity.get().place.id shouldBe mock.place.id
         pointReviewEntity.get().actionType shouldBe mock.actionType
-        pointReviewEntity.get().userId shouldBe mock.userId
+        pointReviewEntity.get().user.id shouldBe mock.user.id
         pointReviewEntity.get().photo shouldContainAll mock.photo
     }
 
@@ -44,8 +44,8 @@ class PointReviewRepositoryTest(
         val userId = "testUserId"
         val mock = getMockPointReviewEntityForCountNotDeletedPlaceId()
         pointReviewRepository.saveAll(mock)
-        val count = mock.filter { it.placeId == placeId }
-            .count { it.userId != userId }
+        val count = mock.filter { it.place.id == placeId }
+            .count { it.user.id != userId }
 
         //when
         val pointReviewEntity = pointReviewRepository.countNotDeletedPlaceId(

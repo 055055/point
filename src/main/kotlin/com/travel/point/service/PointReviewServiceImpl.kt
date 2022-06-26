@@ -2,7 +2,7 @@ package com.travel.point.service
 
 import com.travel.point.constants.*
 import com.travel.point.domain.User
-import com.travel.point.service.param.PointChannelDto
+import com.travel.point.service.param.PointRequest
 import com.travel.point.service.param.PointResult
 import com.travel.point.store.PointStore
 import com.travel.point.type.PointEventType
@@ -21,7 +21,7 @@ class PointReviewServiceImpl(
         )
 
     @Transactional
-    override fun add(request: PointChannelDto) {
+    override fun add(request: PointRequest) {
         val review = pointStore.saveReview(request.review)
         pointStore.addPoint(
             point = review.convertToPoint(),
@@ -39,7 +39,7 @@ class PointReviewServiceImpl(
     }
 
     @Transactional
-    override fun delete(request: PointChannelDto) {
+    override fun delete(request: PointRequest) {
         val review = pointStore.deleteReview(request.review)
         pointStore.deletePoint(
             point = review.convertToPoint(),
@@ -57,7 +57,7 @@ class PointReviewServiceImpl(
     }
 
     @Transactional
-    override fun modify(request: PointChannelDto) {
+    override fun modify(request: PointRequest) {
         val review = request.review
         val point = pointStore.getLastReviewPointHistory(review)
         pointStore.deletePoint(

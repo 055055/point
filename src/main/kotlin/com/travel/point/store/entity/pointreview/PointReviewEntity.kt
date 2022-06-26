@@ -21,6 +21,7 @@ class PointReviewEntity(review: Review)
     @Id
     var id: String = review.id
 
+    @Column(nullable = false)
     var content: String = review.content
 
     @Embedded
@@ -34,10 +35,11 @@ class PointReviewEntity(review: Review)
         joinColumns = [JoinColumn(name = "point_review_id",
         referencedColumnName = "id")]
     )
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     var photo: List<String> = review.photo.ids
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     var actionType: EventActionType = review.actionType
 
     fun updatePointReview(review: Review) {

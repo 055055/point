@@ -1,0 +1,82 @@
+###
+POST http://localhost:8080/events
+Content-Type: application/json
+
+{
+  "type": "REVIEW",
+  "action": "ADD",
+  "reviewId": "1",
+  "content": "hi",
+  "attachedPhotoIds": [
+    "photo-1",
+    "photo-2"
+  ],
+  "userId": "user1",
+  "placeId": "place1"
+}
+
+###
+
+POST http://localhost:8080/events
+Content-Type: application/json
+
+{
+  "type": "REVIEW",
+  "action": "ADD",
+  "reviewId": "3",
+  "content": "",
+  "attachedPhotoIds": [
+  ],
+  "userId": "user2",
+  "placeId": "place1"
+}
+
+###
+POST http://localhost:8080/events
+Content-Type: application/json
+
+{
+"type": "REVIEW",
+"action": "MOD",
+"reviewId": "3",
+"content": "123",
+"attachedPhotoIds": [],
+"userId": "user2",
+"placeId": "place1"
+}
+
+###
+POST http://localhost:8080/events
+Content-Type: application/json
+
+{
+  "type": "REVIEW",
+  "action": "DELETE",
+  "reviewId": "3",
+  "content": "123",
+  "attachedPhotoIds": [
+  ],
+  "userId": "user2",
+  "placeId": "place1"
+}
+
+
+###
+POST http://localhost:8080/events
+Content-Type: application/json
+
+{
+  "type": "REVIEW",
+  "action": "DELETE",
+  "reviewId": "1",
+  "content": "hi",
+  "attachedPhotoIds": [
+    "photo-1",
+    "photo-2"
+  ],
+  "userId": "user1",
+  "placeId": "place1"
+}
+
+###
+GET http://localhost:8080/events/point/user1

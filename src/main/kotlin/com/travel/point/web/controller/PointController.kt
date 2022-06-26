@@ -2,7 +2,7 @@ package com.travel.point.web.controller
 
 import com.travel.point.domain.User
 import com.travel.point.service.PointAdapter
-import com.travel.point.web.param.PointDto
+import com.travel.point.web.param.PointRequest
 import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/events")
@@ -12,7 +12,7 @@ class PointController(
 ) {
 
     @PostMapping
-    fun calculatePoint(@RequestBody request: PointDto.Request) {
+    fun calculatePoint(@RequestBody request: PointRequest) {
         pointAdapter.calculatePoint(request.convertToChannelDto())
     }
 

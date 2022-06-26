@@ -1,10 +1,9 @@
 package com.travel.point.service
 
 import com.travel.point.domain.User
-import com.travel.point.service.param.PointChannelDto
+import com.travel.point.service.param.PointRequest
 import com.travel.point.type.EventActionType
 import com.travel.point.type.PointEventType
-import com.travel.point.type.PointType
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,7 +11,7 @@ class PointAdapter(
     private val pointFactory: PointFactory
 ) {
 
-    fun calculatePoint(request: PointChannelDto) {
+    fun calculatePoint(request: PointRequest) {
         when (request.pointEventType) {
             PointEventType.REVIEW -> {
                 when (request.review.actionType) {

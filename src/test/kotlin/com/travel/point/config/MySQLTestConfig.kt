@@ -1,11 +1,9 @@
 package com.travel.point.config
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.DependsOn
-import org.springframework.jdbc.core.JdbcTemplate
 import org.testcontainers.containers.MySQLContainer
 import javax.sql.DataSource
 
@@ -44,14 +42,10 @@ class MySQLTestConfig {
             withUrlParam("characterSetResults", "utf8")
             withUrlParam("serverTimezone", "Asia/Seoul")
             withUrlParam("zeroDateTimeBehavior", "convertToNull")
-            withReuse(true)
         }
 
         init {
             mysql.start()
         }
-
-//        fun deleteAll() =
-
     }
 }
