@@ -11,7 +11,7 @@ import javax.persistence.*
 @Table(
     name = "POINT_HISTORY",
     indexes = [
-        Index(name = "point_history_index_1", columnList = "userId" , unique = true),
+        Index(name = "point_history_index_1", columnList = "userId"),
         Index(name = "point_history_index_2", columnList = "createdDateTime")
     ]
 )

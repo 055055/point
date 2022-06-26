@@ -11,7 +11,7 @@ Content-Type: application/json
     "photo-1",
     "photo-2"
   ],
-  "userId": "user1",
+  "userId": "user3",
   "placeId": "place1"
 }
 
