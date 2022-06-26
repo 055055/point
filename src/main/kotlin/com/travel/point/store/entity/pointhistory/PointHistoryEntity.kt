@@ -25,28 +25,36 @@ class PointHistoryEntity(
     @Id
     @GeneratedValue
     var seq: Long? = null
+        protected set
 
     @JoinColumn(name = "point_id", foreignKey = ForeignKey(name = "fk_point_id"))
     @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var pointEntity: PointEntity = pointEntity
+        protected set
 
     @JoinColumn(name = "review_id", foreignKey = ForeignKey(name = "fk_review_id"))
     @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var pointReviewEntity: PointReviewEntity? = pointReviewEntity
+        protected set
 
     @Embedded
     var user: User = pointEntity.user
+        protected set
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var pointType: PointType = pointType
+        protected set
 
     @Column(nullable = false)
     var point: Int = point
+        protected set
 
     @Column(nullable = false)
     var totalPoint: Int = pointEntity.point
+        protected set
 
     @Column(nullable = false)
     var comment: String = comment
+        protected set
 }

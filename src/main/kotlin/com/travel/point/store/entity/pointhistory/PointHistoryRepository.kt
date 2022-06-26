@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
-import java.util.*
 
 interface PointHistoryRepository : JpaRepository<PointHistoryEntity, Long> {
     @Query(
@@ -17,7 +16,7 @@ interface PointHistoryRepository : JpaRepository<PointHistoryEntity, Long> {
     )
     fun findByReviewId(
         @Param("reviewId") reviewId: String,
-        @Param("pointType") pointType: PointType = PointType.BONUS
+        @Param("pointType") pointType: PointType = PointType.REVIEW
     ): List<PointHistoryEntity>
 
     @Query(
@@ -31,7 +30,7 @@ interface PointHistoryRepository : JpaRepository<PointHistoryEntity, Long> {
     )
     fun findLastBonusPointByReviewId(
         @Param("reviewId") reviewId: String,
-        @Param("pointType") pointType: PointType,
+        @Param("pointType") pointType: PointType = PointType.BONUS,
         pageable: Pageable
     ): List<PointHistoryEntity>
 

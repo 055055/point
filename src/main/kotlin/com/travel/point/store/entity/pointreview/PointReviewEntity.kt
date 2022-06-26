@@ -20,27 +20,33 @@ class PointReviewEntity(review: Review)
     : BaseEntity() {
     @Id
     var id: String = review.id
+        protected set
 
     @Column(nullable = false)
     var content: String = review.content
+        protected set
 
     @Embedded
     var user: User = review.user
+        protected set
 
     @Embedded
     var place: Place = review.place
+        protected set
 
     @CollectionTable(
         name = "POINT_REVIEW_PHOTO",
         joinColumns = [JoinColumn(name = "point_review_id",
-        referencedColumnName = "id")]
+            referencedColumnName = "id")]
     )
     @ElementCollection(fetch = FetchType.EAGER)
     var photo: List<String> = review.photo.ids
+        protected set
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var actionType: EventActionType = review.actionType
+        protected set
 
     fun updatePointReview(review: Review) {
         this.content = review.content

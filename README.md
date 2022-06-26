@@ -49,6 +49,17 @@ POST /events
   * 어떤 장소에서 사용자 A가 리뷰를 남겼다가 삭제하고, 삭제된 이후 사용자 B가 리뷰를 남기면 사용자 B에게 보너스 점수를 부여하지 않는다.
 
 ---
+#API환경 구성 가이드
+
+##사용기술
+* kotlin
+* spring-boot 
+* spring-boot-starter-data-jpa
+* mysql
+* kotest
+* testcontainers
+* docker-compose
+
 ##실행방법
 * sudo yum install java-11-openjdk-devel (자바 11 설치)
 * sudo /usr/sbin/alternatives --config java (자바 11 선택)
@@ -65,21 +76,30 @@ POST /events
 
 ---
 ## Database DDL
+![travel-point ERD](./travel-point-db.png)
+
+
+```sql
+create table hibernate_sequence
+(
+    next_val bigint null
+);
+```
 ```sql
 create table point
 (
-    seq                bigint auto_increment
-        primary key,
-    created_date_time  datetime     null,
-    modified_date_time datetime     null,
-    point              int          not null,
-    user_id            varchar(255) null,
-    constraint point_index_1
-        unique (user_id)
+  seq                bigint auto_increment
+    primary key,
+  created_date_time  datetime     not null,
+  modified_date_time datetime     not null,
+  point              int          not null,
+  user_id            varchar(255) not null,
+  constraint point_index_1
+    unique (user_id)
 );
 
 create index point_index_2
-    on point (created_date_time);
+  on point (created_date_time);
 ```
 
 ```sql
@@ -87,25 +107,26 @@ create table point_history
 (
     seq                bigint       not null
         primary key,
-    created_date_time  datetime     null,
-    modified_date_time datetime     null,
-    comment            varchar(255) null,
+    created_date_time  datetime     not null,
+    modified_date_time datetime     not null,
+    comment            varchar(255) not null,
     point              int          not null,
-    point_type         varchar(255) null,
+    point_type         varchar(255) not null,
     total_point        int          not null,
-    user_id            varchar(255) null,
+    user_id            varchar(255) not null,
     point_id           bigint       null,
     review_id          varchar(255) null,
     constraint point_history_index_1
         unique (user_id),
-    constraint FK70yu34b3mgx3txpiqgbm2a946
-        foreign key (review_id) references point_review (id),
-    constraint FKbcsl46fi3o1hinpj3gt575r3k
-        foreign key (point_id) references point (seq)
+    constraint fk_point_id
+        foreign key (point_id) references point (seq),
+    constraint fk_review_id
+        foreign key (review_id) references point_review (id)
 );
 
 create index point_history_index_2
     on point_history (created_date_time);
+
 ```
 
 ```sql
@@ -113,20 +134,19 @@ create table point_review
 (
     id                 varchar(255) not null
         primary key,
-    created_date_time  datetime     null,
-    modified_date_time datetime     null,
-    action_type        varchar(255) null,
-    content            varchar(255) null,
-    place_id           varchar(255) null,
-    user_id            varchar(255) null
+    created_date_time  datetime     not null,
+    modified_date_time datetime     not null,
+    action_type        varchar(255) not null,
+    content            varchar(255) not null,
+    place_id           varchar(255) not null,
+    user_id            varchar(255) not null
 );
 
 create index point_review_index_1
     on point_review (place_id, user_id);
 
 create index point_review_index_2
-    on point_review (created_date_time)
-
+    on point_review (created_date_time);
 ```
 
 ```sql

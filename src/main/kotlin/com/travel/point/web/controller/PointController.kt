@@ -18,7 +18,5 @@ class PointController(
 
     @GetMapping("/point/{userId}")
     fun getPoint(@PathVariable userId: String) =
-        pointAdapter.getPoint(
-            User(id = userId)
-        )?.convertToPointResponse()
+        pointAdapter.getPoint(User(userId))?.convertToPointResponse()
 }

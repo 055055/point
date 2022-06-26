@@ -40,7 +40,7 @@ class PointStoreImpl(
     @Transactional
     override fun addPoint(point: Point, review: Review, comment: String) {
         val pointEntity = pointRepository.findByUserId(point.user.id).orElse(
-            PointEntity(user = point.user)
+            PointEntity(point.user)
         )
         pointEntity.addPoint(point.score)
 

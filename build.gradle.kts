@@ -50,9 +50,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("mysql:mysql-connector-java")
-
     implementation("io.github.microutils:kotlin-logging:${Version.LOGGING}")
-
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.kotest:kotest-assertions-core:${Version.Test.KOTEST}")
@@ -62,7 +60,6 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:${Version.Test.NINJA_SQUAD}")
     testImplementation("org.testcontainers:testcontainers:${Version.Test.TESTCONTAINERS}")
     testImplementation("org.testcontainers:mysql:${Version.Test.TESTCONTAINERS}")
-
 }
 
 

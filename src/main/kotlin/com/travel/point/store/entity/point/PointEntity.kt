@@ -8,7 +8,7 @@ import javax.persistence.*
 @Table(
     name = "POINT",
     indexes = [
-        Index(name = "point_index_1", columnList = "userId" , unique = true),
+        Index(name = "point_index_1", columnList = "userId", unique = true),
         Index(name = "point_index_2", columnList = "createdDateTime")
     ]
 )
@@ -17,12 +17,15 @@ class PointEntity(user: User)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var seq: Long? = null
+        protected set
 
     @Embedded
     var user: User = user
+        protected set
 
     @Column(nullable = false)
     var point: Int = 0
+        protected set
 
     fun addPoint(score: Int) {
         this.point += score
