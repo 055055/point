@@ -1,4 +1,4 @@
-#여행자 클럽 마일리지 서비스 
+# 여행자 클럽 마일리지 서비스 
 ## 프로젝트 설명
 사용자들이 장소에 리뷰를 작성할 때 포인트를 부여하고, 전체/개인에 대한 포인트 부여 히스토리와 개인별 누적 포인트를 관리하고자 한다.
 
@@ -37,7 +37,7 @@ POST /events
   * POST /events로 호출하는 포인트 적립 API
   * 포인트 조회 API
 
-##REMARKS
+## REMARKS
 * 포인트 증감이 있을 때마다 이력이 남아야 한다.
 * 사용자마다 현재 시점의 포인트 총점을 조회하거나 계산할 수 있어야 한다.
 * 포인트 부여 API 구현에 필요한 SQL 수행시, 전체 테이블 스캔이 일어나지 않는 인덱스 필요
@@ -49,9 +49,9 @@ POST /events
   * 어떤 장소에서 사용자 A가 리뷰를 남겼다가 삭제하고, 삭제된 이후 사용자 B가 리뷰를 남기면 사용자 B에게 보너스 점수를 부여하지 않는다.
 
 ---
-#API환경 구성 가이드
+# API환경 구성 가이드
 
-##사용기술
+## 사용기술
 * kotlin
 * spring-boot 
 * spring-boot-starter-data-jpa
@@ -60,7 +60,7 @@ POST /events
 * testcontainers
 * docker-compose
 
-##실행방법
+## 실행방법
 * sudo yum install java-11-openjdk-devel (자바 11 설치)
 * sudo /usr/sbin/alternatives --config java (자바 11 선택)
 * sudo yum install git (깃 설치)
