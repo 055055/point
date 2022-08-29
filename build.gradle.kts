@@ -3,9 +3,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.7.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.asciidoctor.jvm.convert") version "3.3.2"
+
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.jpa") version "1.6.21"
+
 }
 
 allOpen {
@@ -22,6 +25,7 @@ group = "com.travel"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
+val asciidoctorExtensions: Configuration by configurations.creating
 
 object Version {
     const val LOGGING = "2.1.21"
@@ -31,6 +35,7 @@ object Version {
         const val MOCKK = "1.12.4"
         const val NINJA_SQUAD = "3.1.1"
         const val TESTCONTAINERS = "1.17.2"
+        const val RESTDOCS = "2.0.6.RELEASE"
     }
 }
 
@@ -60,6 +65,9 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:${Version.Test.NINJA_SQUAD}")
     testImplementation("org.testcontainers:testcontainers:${Version.Test.TESTCONTAINERS}")
     testImplementation("org.testcontainers:mysql:${Version.Test.TESTCONTAINERS}")
+    testImplementation("org.springframework.restdocs:spring-restdocs-webtestclient:${Version.Test.RESTDOCS}")
+
+    asciidoctorExtensions("org.springframework.restdocs:spring-restdocs-asciidoctor:${Version.Test.RESTDOCS}")
 }
 
 
@@ -73,4 +81,33 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.asciidoctor {
+    doFirst {
+        delete {
+            file("src/main/resources/static/docs")
+        }
+    }
+
+    dependsOn(tasks.test)
+
+    configurations(asciidoctorExtensions.name)
+
+    baseDirFollowsSourceDir()
+
+    doLast {
+        copy {
+            from(outputDir)
+            into("src/main/resources/static/docs")
+        }
+    }
+}
+
+tasks.build {
+    dependsOn(tasks.asciidoctor)
+}
+
+tasks.bootJar {
+    dependsOn(tasks.asciidoctor)
 }
