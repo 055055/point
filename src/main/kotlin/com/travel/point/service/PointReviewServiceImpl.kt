@@ -15,13 +15,13 @@ class PointReviewServiceImpl(
 ) : PointService {
     override fun eventType(): PointEventType = PointEventType.REVIEW
 
-    override fun getPoint(user: User) =
+    override suspend fun getPoint(user: User) =
         PointResult(
             point = pointStore.getPoint(user)
         )
 
     @Transactional
-    override fun add(request: PointRequest) {
+    override suspend fun add(request: PointRequest) {
         val review = pointStore.saveReview(request.review)
         pointStore.addPoint(
             point = review.convertToPoint(),
@@ -39,7 +39,7 @@ class PointReviewServiceImpl(
     }
 
     @Transactional
-    override fun delete(request: PointRequest) {
+    override suspend fun delete(request: PointRequest) {
         val review = pointStore.deleteReview(request.review)
         pointStore.deletePoint(
             point = review.convertToPoint(),
@@ -57,7 +57,7 @@ class PointReviewServiceImpl(
     }
 
     @Transactional
-    override fun modify(request: PointRequest) {
+    override suspend fun modify(request: PointRequest) {
         val review = request.review
         val point = pointStore.getLastReviewPointHistory(review)
         pointStore.deletePoint(

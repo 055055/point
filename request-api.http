@@ -79,4 +79,4 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/events/point/user1
+GET http://localhost:8080/events/point/user3

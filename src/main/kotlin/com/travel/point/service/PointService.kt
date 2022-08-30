@@ -6,9 +6,9 @@ import com.travel.point.service.param.PointResult
 import com.travel.point.type.PointEventType
 
 interface PointService {
-    fun add(request: PointRequest)
-    fun modify(request: PointRequest)
-    fun delete(request: PointRequest)
+    suspend fun add(request: PointRequest)
+    suspend fun modify(request: PointRequest)
+    suspend fun delete(request: PointRequest)
     fun eventType(): PointEventType
-    fun getPoint(user: User): PointResult
+    suspend fun getPoint(user: User): PointResult
 }

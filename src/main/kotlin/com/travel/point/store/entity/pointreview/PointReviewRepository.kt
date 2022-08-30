@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param
 interface PointReviewRepository : JpaRepository<PointReviewEntity, String> {
 
     @Query(
-        """
+            """
          SELECT count(pr) FROM PointReviewEntity pr 
             WHERE pr.actionType <> :actionType
             AND pr.place.id = :placeId
@@ -16,8 +16,8 @@ interface PointReviewRepository : JpaRepository<PointReviewEntity, String> {
         """
     )
     fun countNotDeletedPlaceId(
-        @Param("placeId") placeId: String,
-        @Param("userId") userId: String,
-        @Param("actionType") eventActionType: EventActionType = EventActionType.DELETE
+            @Param("placeId") placeId: String,
+            @Param("userId") userId: String,
+            @Param("actionType") eventActionType: EventActionType = EventActionType.DELETE
     ): Int
 }

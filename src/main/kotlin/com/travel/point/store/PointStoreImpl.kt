@@ -29,7 +29,7 @@ class PointStoreImpl(
 ) : PointStore {
 
     @Transactional
-    override fun saveReview(review: Review): Review {
+    override suspend fun saveReview(review: Review): Review {
         if (pointReviewRepository.findById(review.id).isPresent) {
             throw PointReviewException(PointReviewError.ALREADY_SAVED_REVIEW)
         }
@@ -38,7 +38,7 @@ class PointStoreImpl(
     }
 
     @Transactional
-    override fun addPoint(point: Point, review: Review, comment: String) {
+    override suspend fun addPoint(point: Point, review: Review, comment: String) {
         val pointEntity = pointRepository.findByUserId(point.user.id).orElse(
             PointEntity(point.user)
         )
@@ -56,7 +56,7 @@ class PointStoreImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun getReviewBonusPoint(review: Review): Point {
+    override suspend fun getReviewBonusPoint(review: Review): Point {
         val reviewCount = pointReviewRepository.countNotDeletedPlaceId(review.place.id, review.user.id)
         return if (reviewCount == 0) {
             Point(
@@ -75,7 +75,7 @@ class PointStoreImpl(
         }
     }
 
-    override fun getRollbackReviewBonusPoint(review: Review): Point {
+    override suspend fun getRollbackReviewBonusPoint(review: Review): Point {
         val bonusPointHistory = pointHistoryRepository.findLastBonusPointByReviewId(
             review.id,
             PointType.BONUS,
@@ -100,7 +100,7 @@ class PointStoreImpl(
     }
 
     @Transactional
-    override fun deletePoint(point: Point, review: Review, comment: String) {
+    override suspend fun deletePoint(point: Point, review: Review, comment: String) {
 
         val deletePoint = pointHistoryRepository.findByReviewId(review.id, point.type ?: PointType.REVIEW)
             .stream().mapToInt { it.point }.sum()
@@ -126,7 +126,7 @@ class PointStoreImpl(
     }
 
     @Transactional
-    override fun deleteReview(review: Review): Review {
+    override suspend fun deleteReview(review: Review): Review {
         val pointReview = pointReviewRepository.findById(review.id)
             .orElseThrow { PointReviewException(PointReviewError.CHECK_REVIEW_ID) }
 
@@ -138,7 +138,7 @@ class PointStoreImpl(
     }
 
     @Transactional
-    override fun getLastReviewPointHistory(review: Review): Point {
+    override suspend fun getLastReviewPointHistory(review: Review): Point {
         val pointHistoryEntity = pointHistoryRepository.findLastOneByReviewId(
             reviewId = review.id,
             pageable = Pageable.ofSize(1)
@@ -156,7 +156,7 @@ class PointStoreImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun getPoint(user: User): Point {
+    override suspend fun getPoint(user: User): Point {
         val pointEntity = pointRepository.findByUserId(user.id)
             .orElseThrow { CommonException(CommonError.CHECK_USER_ID) }
 
@@ -167,7 +167,7 @@ class PointStoreImpl(
     }
 
     @Transactional
-    override fun modifyReview(review: Review) {
+    override suspend fun modifyReview(review: Review) {
         val pointReview = pointReviewRepository.findById(review.id)
             .orElseThrow { PointReviewException(PointReviewError.CHECK_REVIEW_ID) }
 

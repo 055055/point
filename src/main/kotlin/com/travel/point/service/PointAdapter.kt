@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class PointAdapter(
-    private val pointFactory: PointFactory
+        private val pointFactory: PointFactory
 ) {
 
-    fun calculatePoint(request: PointRequest) {
+    suspend fun calculatePoint(request: PointRequest) {
         when (request.pointEventType) {
             PointEventType.REVIEW -> {
                 when (request.review.actionType) {
@@ -23,5 +23,5 @@ class PointAdapter(
         }
     }
 
-    fun getPoint(user: User) = pointFactory.getPointService(PointEventType.REVIEW)?.getPoint(user)
+    suspend fun getPoint(user: User) = pointFactory.getPointService(PointEventType.REVIEW)?.getPoint(user)
 }

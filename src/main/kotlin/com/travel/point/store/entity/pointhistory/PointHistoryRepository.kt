@@ -8,19 +8,19 @@ import org.springframework.data.repository.query.Param
 
 interface PointHistoryRepository : JpaRepository<PointHistoryEntity, Long> {
     @Query(
-        """
+            """
          SELECT ph FROM PointHistoryEntity ph 
             WHERE ph.pointReviewEntity.id = :reviewId
             AND ph.pointType = :pointType
         """
     )
     fun findByReviewId(
-        @Param("reviewId") reviewId: String,
-        @Param("pointType") pointType: PointType = PointType.REVIEW
+            @Param("reviewId") reviewId: String,
+            @Param("pointType") pointType: PointType = PointType.REVIEW
     ): List<PointHistoryEntity>
 
     @Query(
-        """
+            """
          SELECT ph FROM PointHistoryEntity ph 
             WHERE ph.pointReviewEntity.id = :reviewId
             AND ph.pointType = :pointType
@@ -29,13 +29,13 @@ interface PointHistoryRepository : JpaRepository<PointHistoryEntity, Long> {
         """
     )
     fun findLastBonusPointByReviewId(
-        @Param("reviewId") reviewId: String,
-        @Param("pointType") pointType: PointType = PointType.BONUS,
-        pageable: Pageable
+            @Param("reviewId") reviewId: String,
+            @Param("pointType") pointType: PointType = PointType.BONUS,
+            pageable: Pageable
     ): List<PointHistoryEntity>
 
     @Query(
-        """
+            """
          SELECT ph FROM PointHistoryEntity ph 
             WHERE ph.pointReviewEntity.id = :reviewId
             AND ph.pointType = :pointType
@@ -43,8 +43,8 @@ interface PointHistoryRepository : JpaRepository<PointHistoryEntity, Long> {
         """
     )
     fun findLastOneByReviewId(
-        @Param("reviewId") reviewId: String,
-        @Param("pointType") pointType: PointType = PointType.REVIEW,
-        pageable: Pageable
+            @Param("reviewId") reviewId: String,
+            @Param("pointType") pointType: PointType = PointType.REVIEW,
+            pageable: Pageable
     ): List<PointHistoryEntity>
 }

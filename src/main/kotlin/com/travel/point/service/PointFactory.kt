@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class PointFactory(
-    pointServiceList: List<PointService>
+        pointServiceList: List<PointService>
 ) {
     private val pointServiceMap: HashMap<PointEventType, PointService> = HashMap()
 
@@ -19,5 +19,5 @@ class PointFactory(
         }
     }
 
-    fun getPointService(pointEventType: PointEventType): PointService? = pointServiceMap[pointEventType]
+    suspend fun getPointService(pointEventType: PointEventType): PointService? = pointServiceMap[pointEventType]
 }
